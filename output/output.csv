@@ -1,0 +1,6 @@
+doc_type,email,candidate_id,full_name,reporting_manager,role,location,source,date_of_joining,phone_number,age,t_shirt_size,bank_name,account_number,ifsc_code,experience_years,cgpa,education,aadhar_number
+text,rajesh.kumar@email.com,1,Rajesh Kumar,Suresh Reddy,Senior Software Engineer,Bangalore,1_Rajesh_Kumar_01_OFFER_LETTER.pdf,2025-01-15,9876543210,29,L,HDFC Bank,****7891,HDFC0001234,7,8.5,B.Tech,**** **** 3456
+text,priya.sharma@email.com,2,Priya Sharma,Amit Verma,Product Manager,Mumbai,2_Priya_Sharma_01_OFFER_LETTER.pdf,2025-02-01,9876543211,27,M,ICICI Bank,****8901,ICIC0000123,5,8.2,MBA,**** **** 4567
+text,arjun.patel@email.com,3,Arjun Patel,Deepa Rao,Data Scientist,Hyderabad,3_Arjun_Patel_01_OFFER_LETTER.pdf,2025-01-20,9876543212,26,XL,Axis Bank,****1234,UTIB0000456,4,8.8,B.Tech,**** **** 5678
+text,neha.desai@email.com,4,Neha Desai,Rahul Mehta,UX/UI Designer,Pune,4_Neha_Desai_01_OFFER_LETTER.pdf,2025-02-10,9876543213,28,S,State Bank of India,****2345,SBIN0001234,6,8.0,B.Des,**** **** 6789
+text,vikram.singh@email.com,5,Vikram Singh,Karthik N,DevOps Engineer,Chennai,5_Vikram_Singh_01_OFFER_LETTER.pdf,2025-01-25,9876543214,30,XXL,Kotak Mahindra Bank,****3456,KKBK0000789,8,8.3,B.Tech,**** **** 7890

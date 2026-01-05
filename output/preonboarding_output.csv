@@ -1,0 +1,6 @@
+candidate_id,doc_type,source_file,full_name,bank_name,account_last4,bank_account_hash,role,location,date_of_joining
+rajesh.kumar@email.com,form,1_Rajesh_Kumar_ACCEPTANCE.pdf,Rajesh Kumar,DETAILS FORM,7891,8b536c4caa893a8501e25b2a901a31ae6807a1eae4e2453d22898d0de1725b94,Senior Software Engineer,Bangalore,2025-01-15
+priya.sharma@email.com,form,2_Priya_Sharma_ACCEPTANCE.pdf,Priya Sharma,DETAILS FORM,8901,bdc9405c664c44254e733b2e001237142fdef3511904fb309829800c4b96cdf7,Product Manager,Mumbai,2025-02-01
+arjun.patel@email.com,form,3_Arjun_Patel_ACCEPTANCE.pdf,Arjun Patel,DETAILS FORM,1234,3dcf6cf22a3e3d1f99b4165892554af0b628e883d7ffa7ceb94df24934e77ecb,Data Scientist,Hyderabad,2025-01-20
+neha.desai@email.com,form,4_Neha_Desai_ACCEPTANCE.pdf,Neha Desai,DETAILS FORM,2345,8a4296745f6294d618195274967a2e343b225e22509a6fc652f05eeaca0cc28d,UX/UI Designer,Pune,2025-02-10
+vikram.singh@email.com,form,5_Vikram_Singh_ACCEPTANCE.pdf,Vikram Singh,DETAILS FORM,3456,b1500278d973ad088be18d9805a89f5882db65d2ce0aedae917936da2feba1bb,DevOps Engineer,Chennai,2025-01-25

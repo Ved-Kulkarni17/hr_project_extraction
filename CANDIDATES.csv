@@ -1,0 +1,6 @@
+id,name,email,role,location,doj,bank,acct
+1,Rajesh Kumar,rajesh.kumar@email.com,Senior Software Engineer,Bangalore,2025-01-15,HDFC Bank,50100234567891
+2,Priya Sharma,priya.sharma@email.com,Product Manager,Mumbai,2025-02-01,ICICI Bank,60200145678901
+3,Arjun Patel,arjun.patel@email.com,Data Scientist,Hyderabad,2025-01-20,Axis Bank,90345678901234
+4,Neha Desai,neha.desai@email.com,UX/UI Designer,Pune,2025-02-10,SBI,10456789012345
+5,Vikram Singh,vikram.singh@email.com,DevOps Engineer,Chennai,2025-01-25,Kotak,70567890123456
