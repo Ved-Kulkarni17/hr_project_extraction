@@ -19,7 +19,7 @@ const App = () => {
     files.forEach(file => formData.append("files", file));
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/upload', {
+      const response = await fetch('http://127.0.0.1:8001/upload', {
         method: 'POST',
         body: formData,
       });
