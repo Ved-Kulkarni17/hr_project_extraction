@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, FileText, Send, Settings, Trash2, Eye } from 'lucide-react';
+import { User, FileText, Send, Settings, Trash2, Download } from 'lucide-react';
 
 const App = () => {
   const [files, setFiles] = useState([]);
@@ -32,6 +32,55 @@ const App = () => {
     }
   };
 
+  // --- NEW: DOWNLOAD AS CSV ---
+  const downloadCSV = () => {
+    if (candidates.length === 0) {
+      alert("No data to download!");
+      return;
+    }
+
+    // Define CSV headers
+    const headers = [
+      "ID", "Name", "Role", "Email", "Phone", "Manager", "Location", "DOJ",
+      "Experience (Years)", "Education", "CGPA", "Bank", "Account", "Aadhar", "T-Shirt", "Status"
+    ];
+
+    // Map data to CSV rows
+    const rows = candidates.map(c => [
+      c.candidate_id || "",
+      c.full_name || "",
+      c.role || "",
+      c.email || "",
+      c.phone_number ? `'${c.phone_number}` : "",  // Force Text
+      c.reporting_manager || "",
+      c.location || "",
+      c.date_of_joining || "",
+      c.experience_years || "",
+      c.education || "",
+      c.cgpa || "",
+      c.bank_name || "",
+      c.account_number ? `${c.account_number}` : "", // Force Text (Fixes 5.01E+13)
+      c.aadhar_number ? `${c.aadhar_number}` : "",   // Force Text (Fixes Scientific Notation)
+      c.t_shirt_size || "",
+      (!c.bank_name || !c.aadhar_number) ? "Missing Docs" : "Ready"
+    ]);
+
+    // Create CSV string
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
+    ].join("\n");
+
+    // Create a download link
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `HR_Dashboard_Export_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-[#050810] text-gray-300 font-sans selection:bg-blue-500 selection:text-white">
       <nav className="flex items-center justify-between px-8 py-5 bg-[#0b0f1a] border-b border-gray-800">
@@ -39,7 +88,7 @@ const App = () => {
           <h1 className="text-2xl font-bold tracking-tight text-white">
             <span className="text-blue-500">HR INFORMATION</span> DASHBOARD
           </h1>
-          <p className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Automated Data Extraction Console</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Automated Email & Reminder Console</p>
         </div>
         <div className="flex space-x-1 bg-[#111827] p-1 rounded-full border border-gray-800">
           <NavButton active text="Recipients" icon={<User size={14} />} />
@@ -80,6 +129,19 @@ const App = () => {
                 </div>
               </div>
             </div>
+
+            {/* --- NEW: Download CSV Button --- */}
+            {candidates.length > 0 && (
+              <div className="flex justify-end">
+                <button 
+                  onClick={downloadCSV}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-green-900/50"
+                >
+                  <Download size={16} />
+                  Download as CSV
+                </button>
+              </div>
+            )}
 
             <div className="rounded-lg border border-gray-800 overflow-hidden bg-[#0b0f1a]">
               <div className="overflow-x-auto">
@@ -125,15 +187,8 @@ const App = () => {
                           <td className="px-6 py-4 text-gray-400">{c.education || "-"}</td>
                           <td className="px-6 py-4 text-center text-gray-300">{c.cgpa || "-"}</td>
                           <td className="px-6 py-4 text-gray-400">{c.bank_name || "-"}</td>
-                          
-                          {/* --- MASKED CELLS (HOVER TO REVEAL) --- */}
-                          <td className="px-6 py-4">
-                            <MaskedCell value={c.account_number} type="account" />
-                          </td>
-                          <td className="px-6 py-4">
-                            <MaskedCell value={c.aadhar_number} type="aadhar" />
-                          </td>
-
+                          <td className="px-6 py-4"><MaskedCell value={c.account_number} type="account" /></td>
+                          <td className="px-6 py-4"><MaskedCell value={c.aadhar_number} type="aadhar" /></td>
                           <td className="px-6 py-4 text-center text-gray-400">{c.t_shirt_size || "-"}</td>
                           <td className="px-6 py-4">
                             {(!c.bank_name || !c.aadhar_number) ? <span className="text-red-400 text-xs bg-red-900/20 px-2 py-1 rounded border border-red-900/50">Missing Docs</span> : <span className="text-green-400 text-xs bg-green-900/20 px-2 py-1 rounded border border-green-900/50">Ready</span>}
@@ -153,28 +208,16 @@ const App = () => {
   );
 };
 
-// --- NEW COMPONENT: MASKED CELL ---
 const MaskedCell = ({ value, type }) => {
   if (!value) return <span className="text-gray-600 font-mono">-</span>;
-  
-  // Create mask logic
   const len = value.length;
-  const visibleChars = 4;
-  const maskedPart = "*".repeat(Math.max(0, len - visibleChars));
-  const visiblePart = value.slice(-visibleChars);
+  const visiblePart = value.slice(-4);
   const displayMask = `**** ${visiblePart}`; 
 
   return (
     <div className="group relative cursor-pointer font-mono text-gray-400">
-      {/* Default: Masked View */}
-      <span className="group-hover:hidden transition-all duration-200">
-        {displayMask}
-      </span>
-      
-      {/* Hover: Full Value View */}
-      <span className="hidden group-hover:inline text-blue-400 bg-blue-900/20 px-1 rounded transition-all duration-200 select-all">
-        {value}
-      </span>
+      <span className="group-hover:hidden transition-all duration-200">{displayMask}</span>
+      <span className="hidden group-hover:inline text-blue-400 bg-blue-900/20 px-1 rounded transition-all duration-200 select-all">{value}</span>
     </div>
   );
 };

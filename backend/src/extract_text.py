@@ -15,7 +15,6 @@ def extract_text_based_fields(pdf_path):
     data = {"doc_type": "text"}
     clean_text = re.sub(r'\s+', ' ', text).strip()
 
-    # --- COMMON ---
     email = re.search(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", text)
     if email:
         data["email"] = email.group(0)
@@ -30,15 +29,11 @@ def extract_text_based_fields(pdf_path):
     phone = re.search(r"(?:Phone|Mobile)[:\s]*([6-9]\d{9})", text)
     if phone: data["phone_number"] = phone.group(1)
 
-    # --- MANAGER EXTRACTION ---
-    # Looks for "Reporting Manager: Name" or "reporting to: Name"
     mgr = re.search(r"(?:Reporting Manager|reporting to)[:\s]+([A-Za-z\s]+?)(?:\.|,|\n)", text, re.IGNORECASE)
     if mgr:
-        # Clean up any trailing chars
         clean_mgr = mgr.group(1).strip().rstrip(".")
         data["reporting_manager"] = clean_mgr
 
-    # --- AADHAR ---
     if "aadhar" in clean_text.lower():
         data["doc_type"] = "aadhar"
         uid = re.search(r"(?:Number|No)[:\s]*([\d\s]{12,16})", text, re.IGNORECASE)
