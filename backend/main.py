@@ -81,6 +81,11 @@ async def process_pdfs(files: List[UploadFile] = File(...)):
     # Merge and return JSON
     if records:
         merged = merge_by_candidate(records)
+        def sort_key(r):
+            cid = str(r.get("candidate_id", ""))
+            return (0, int(cid)) if cid.isdigit() else (1, cid)
+
+        merged = sorted(merged, key=sort_key)
         return {"status": "success", "data": merged}
     else:
         return {"status": "error", "message": "No data found"}
