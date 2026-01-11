@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, FileText, Send, Settings, Trash2, Download } from 'lucide-react';
+import { User, FileText, Send, Settings, Trash2, Download, Home } from 'lucide-react';
 
 const App = () => {
   const [files, setFiles] = useState([]);
@@ -19,6 +19,7 @@ const App = () => {
     files.forEach(file => formData.append("files", file));
 
     try {
+      // Note: Kept your port 8001 setting
       const response = await fetch('http://127.0.0.1:8001/upload', {
         method: 'POST',
         body: formData,
@@ -32,26 +33,23 @@ const App = () => {
     }
   };
 
-  // --- NEW: DOWNLOAD AS CSV ---
   const downloadCSV = () => {
     if (candidates.length === 0) {
       alert("No data to download!");
       return;
     }
 
-    // Define CSV headers
     const headers = [
       "ID", "Name", "Role", "Email", "Phone", "Manager", "Location", "DOJ",
       "Experience (Years)", "Education", "CGPA", "Bank", "Account", "Aadhar", "T-Shirt", "Status"
     ];
 
-    // Map data to CSV rows
     const rows = candidates.map(c => [
       c.candidate_id || "",
       c.full_name || "",
       c.role || "",
       c.email || "",
-      c.phone_number ? `'${c.phone_number}` : "",  // Force Text
+      c.phone_number ? `'${c.phone_number}` : "", 
       c.reporting_manager || "",
       c.location || "",
       c.date_of_joining || "",
@@ -59,19 +57,17 @@ const App = () => {
       c.education || "",
       c.cgpa || "",
       c.bank_name || "",
-      c.account_number ? `${c.account_number}` : "", // Force Text (Fixes 5.01E+13)
-      c.aadhar_number ? `${c.aadhar_number}` : "",   // Force Text (Fixes Scientific Notation)
+      c.account_number ? `'${c.account_number}` : "", 
+      c.aadhar_number ? `'${c.aadhar_number}` : "",   
       c.t_shirt_size || "",
       (!c.bank_name || !c.aadhar_number) ? "Missing Docs" : "Ready"
     ]);
 
-    // Create CSV string
     const csvContent = [
       headers.join(","),
       ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
     ].join("\n");
 
-    // Create a download link
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -83,13 +79,31 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050810] text-gray-300 font-sans selection:bg-blue-500 selection:text-white">
+      
+      {/* --- NAVBAR --- */}
       <nav className="flex items-center justify-between px-8 py-5 bg-[#0b0f1a] border-b border-gray-800">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">
-            <span className="text-blue-500">HR INFORMATION</span> DASHBOARD
-          </h1>
-          <p className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Automated Email & Reminder Console</p>
+        
+        {/* LEFT SIDE: HOME BUTTON + TITLE */}
+        <div className="flex items-center gap-4">
+          {/* HOME BUTTON */}
+          <a 
+            href="http://localhost:1000" 
+            className="p-2 bg-[#1f2937] text-gray-400 hover:text-white hover:bg-blue-600 rounded-lg transition-all shadow-md border border-gray-700 hover:border-blue-500"
+            title="Go to Home (localhost:1000)"
+          >
+            <Home size={20} />
+          </a>
+
+          {/* TITLE */}
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-white">
+              <span className="text-blue-500">HR INFORMATION</span> DASHBOARD
+            </h1>
+            <p className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Automated Email & Reminder Console</p>
+          </div>
         </div>
+
+        {/* RIGHT SIDE: NAVIGATION PILLS */}
         <div className="flex space-x-1 bg-[#111827] p-1 rounded-full border border-gray-800">
           <NavButton active text="Recipients" icon={<User size={14} />} />
           <NavButton text="Templates" icon={<FileText size={14} />} />
@@ -130,7 +144,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* --- NEW: Download CSV Button --- */}
+            {/* DOWNLOAD BUTTON */}
             {candidates.length > 0 && (
               <div className="flex justify-end">
                 <button 
